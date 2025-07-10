@@ -1,135 +1,187 @@
-# Turborepo starter
+# Turborepo Full-Stack Project
 
-This Turborepo starter is maintained by the Turborepo core team.
+Bu proje, modern web geliştirme için **Turborepo** monorepo yapısı kullanarak **Next.js** frontend ve **NestJS** backend'i birleştiren tam yığın bir uygulamadır.
 
-## Using this example
+## 🚀 Teknoloji Yığını
 
-Run the following command:
+### Frontend (Next.js)
 
-```sh
-npx create-turbo@latest
-```
+- **Framework**: Next.js 14 (App Router)
+- **UI Library**: Mantine UI
+- **Styling**: Tailwind CSS
+- **TypeScript**: Tam tip güvenliği
 
-## What's inside?
+### Backend (NestJS)
 
-This Turborepo includes the following packages/apps:
+- **Framework**: NestJS
+- **Database**: Prisma ORM
+- **Authentication**: Passport.js
+  - JWT Strategy
+  - JWT Refresh Strategy
+  - Local Strategy
+- **Validation**: Zod
+- **TypeScript**: Tam tip güvenliği
 
-### Apps and Packages
+### Monorepo Yapısı
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- **Build System**: Turborepo
+- **Package Management**: npm workspaces
+- **Shared Types**: Ortak tip tanımları
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 📁 Proje Yapısı
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+.
+├── apps/
+│   ├── backend/          # NestJS API
+│   │   ├── src/
+│   │   │   ├── auth/     # Authentication modülü
+│   │   │   ├── user/     # User modülü
+│   │   │   └── database/ # Database konfigürasyonu
+│   │   └── prisma/       # Prisma schema ve migrations
+│   └── web/              # Next.js frontend
+│       ├── app/
+│       │   ├── (auth)/   # Auth sayfaları
+│       │   │   ├── login/
+│       │   │   └── register/
+│       │   ├── (user)/   # Kullanıcı sayfaları
+│       │   └── (admin)/  # Admin sayfaları
+│       └── components/   # UI bileşenleri
+├── packages/
+│   ├── shared-types/     # Ortak tip tanımları
+│   ├── eslint-config/    # ESLint konfigürasyonu
+│   └── typescript-config/ # TypeScript konfigürasyonu
+└── turbo.json           # Turborepo konfigürasyonu
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 🔧 Kurulum
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### Gereksinimler
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+- Node.js 18+
+- npm 9+
+- PostgreSQL (veya tercih ettiğiniz veritabanı)
 
-### Develop
+### Adımlar
 
-To develop all apps and packages, run the following command:
+1. **Projeyi klonlayın**
 
-```
-cd my-turborepo
+   ```bash
+   git clone <repository-url>
+   cd turborepo-project
+   ```
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+2. **Bağımlılıkları yükleyin**
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+   ```bash
+   npm install
+   ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+3. **Ortam değişkenlerini ayarlayın**
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+   ```bash
+   # Backend için .env dosyası oluşturun
+   cd apps/backend
+   cp .env.example .env
+   # Gerekli değişkenleri düzenleyin
+   ```
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+4. **Veritabanını kurun**
 
-### Remote Caching
+   ```bash
+   cd apps/backend
+   npx prisma generate
+   npx prisma migrate dev
+   ```
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+5. **Geliştirme sunucularını başlatın**
+   ```bash
+   # Ana dizinden
+   npm run dev
+   ```
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## 🚀 Geliştirme
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+### Mevcut Komutlar
 
-```
-cd my-turborepo
+```bash
+# Tüm uygulamaları geliştirme modunda çalıştır
+npm run dev
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+# Tüm uygulamaları build et
+npm run build
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
+# Linting kontrolleri
+npm run lint
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+# Tip kontrolleri
+npm run type-check
 ```
 
-## Useful Links
+### Backend API Endpoints
 
-Learn more about the power of Turborepo:
+```
+POST /auth/login      # Kullanıcı girişi
+POST /auth/register   # Kullanıcı kaydı
+POST /auth/refresh    # Token yenileme
+```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+## 🔐 Authentication Flow
+
+1. **Kayıt/Giriş**: Kullanıcı `/auth/register` veya `/auth/login` sayfasından işlem yapar
+2. **JWT Token**: Başarılı authentication sonrası JWT token ve refresh token alır
+3. **Token Yenileme**: Access token süresi dolduğunda refresh token ile yeniler
+4. **Korumalı Rotalar**: JWT token ile korumalı sayfalara erişim
+
+## 🎨 UI Bileşenleri
+
+### Mevcut Sayfalar
+
+- ✅ **Login Sayfası** (`/auth/login`)
+- ✅ **Register Sayfası** (`/auth/register`)
+- 🚧 **Dashboard** (geliştirilme aşamasında)
+- 🚧 **Admin Panel** (geliştirilme aşamasında)
+
+### Mantine UI Bileşenleri
+
+- Form validasyonu
+- Responsive tasarım
+- Tema desteği
+- Özelleştirilmiş telefon input
+- Sosyal medya login butonları
+
+## 🔧 Konfigürasyon
+
+### Turborepo
+
+- **Pipeline**: Build, lint, type-check görevleri
+- **Caching**: Hızlı build'ler için akıllı önbellekleme
+- **Parallelization**: Çoklu görev paralel çalıştırma
+
+### ESLint & Prettier
+
+- Tutarlı kod formatlaması
+- Otomatik kod düzeltme
+- Import sıralaması
+
+## 🚀 Deployment
+
+### Backend
+
+```bash
+cd apps/backend
+npm run build
+npm run start:prod
+```
+
+### Frontend
+
+```bash
+cd apps/web
+npm run build
+npm run start
+```
+
+---
+
+**Proje Durumu**: 🚧 Aktif Geliştirme
