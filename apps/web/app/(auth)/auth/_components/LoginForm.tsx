@@ -4,6 +4,7 @@ import {
   Button,
   Divider,
   Group,
+  LoadingOverlay,
   Paper,
   PasswordInput,
   Stack,
@@ -22,10 +23,10 @@ const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    setError,
     formState: { isSubmitting, errors },
     reset,
     watch,
+    setError,
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -38,7 +39,26 @@ const LoginForm = () => {
   const type = watch("type") || "email";
   const onSubmit: SubmitHandler<LoginSchemaType> = async (
     data: LoginSchemaType
-  ) => {};
+  ) => {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-cache",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        setError("root", {
+          message: `${type === "email" ? "E-posta" : "Telefon"} veya şifre yanlış. Lütfen tekrar deneyiniz.`,
+        });
+      }
+    } catch {
+      setError("root", {
+        message: `${type === "email" ? "E-posta" : "Telefon"} veya şifre yanlış. Lütfen tekrar deneyiniz.`,
+      });
+    }
+  };
 
   return (
     <Paper
@@ -50,6 +70,7 @@ const LoginForm = () => {
       maw={400}
       mx="auto"
     >
+      <LoadingOverlay visible={isSubmitting} />
       <Group grow mb="md" mt="md">
         <GoogleButton radius="xl">Google</GoogleButton>
         <FacebookButton radius={"xl"}>Facebook</FacebookButton>
@@ -126,7 +147,12 @@ const LoginForm = () => {
                 error={fieldState.error?.message}
               />
             )}
-          />
+          />{" "}
+          {errors.root && (
+            <Text fz="sm" c={"red"}>
+              {errors.root.message}
+            </Text>
+          )}
           <Group justify="space-between" align="center">
             <Link
               href={"/auth/register"}

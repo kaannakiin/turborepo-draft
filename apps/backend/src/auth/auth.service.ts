@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   BadRequestException,
   Injectable,
@@ -9,16 +6,16 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+import { type User } from '@repo/database';
 import {
   isPossiblePhoneNumber,
   RegisterSchemaType,
   validatePhoneNumber,
 } from '@repo/shared-types';
 import * as argon from 'argon2';
-import { Response } from 'express';
+import { type Request, type Response } from 'express';
 import { UserService } from 'src/user/user.service';
-import { TokenPayload } from './token-payload.interface';
+import { TokenPayload } from '@repo/shared-types';
 
 @Injectable()
 export class AuthService {
@@ -216,5 +213,13 @@ export class AuthService {
       }
       throw new BadRequestException('Refresh token doğrulama hatası');
     }
+  }
+  me(req: Request): TokenPayload | null {
+    const token = req.cookies.access_token || null;
+    if (!token) {
+      return null;
+    }
+    const payload = this.jwtService.decode(token) as TokenPayload;
+    return payload;
   }
 }

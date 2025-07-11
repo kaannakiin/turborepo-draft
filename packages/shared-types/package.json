@@ -22,6 +22,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@repo/database": "*",
     "libphonenumber-js": "^1.12.9",
     "zod": "^4.0.2"
   }

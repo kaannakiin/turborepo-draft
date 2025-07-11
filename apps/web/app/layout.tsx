@@ -22,7 +22,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body
-        className={`antialiased min-h-screen h-full min-w-screen w-full flex flex-col gap-3 `}
+        className={`antialiased min-h-screen h-full min-w-screen w-full flex flex-col  relative `}
       >
         <MantineProvider>{children}</MantineProvider>
       </body>

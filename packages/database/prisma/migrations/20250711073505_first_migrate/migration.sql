@@ -11,6 +11,8 @@ CREATE TABLE "User" (
     "password" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "image" TEXT,
+    "refreshToken" TEXT,
+    "verifiedUser" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

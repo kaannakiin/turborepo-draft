@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from "@repo/database";
 
 export interface TokenPayload {
   id: string;
